@@ -8,7 +8,7 @@ ENV = process.env.NODE_ENV || 'development'
 
 module.exports =
   entry:
-    index: './src/index.coffee'
+    index: './client/index.coffee'
   output:
     path: path.resolve './build'
     publicPath: '/'
@@ -46,12 +46,8 @@ module.exports =
         loader: 'file'
       }
       {
-        test: /\.html$/
-        loaders: ['ngtemplate?relativeTo=' + path.resolve('./src'), 'html']
-      }
-      {
         test: /\.jade$/
-        loaders: ['ngtemplate?relativeTo=' + path.resolve('./src'), 'html', 'jade-html']
+        loaders: ['ngtemplate?relativeTo=' + path.resolve('./client'), 'html', 'jade-html']
         exclude: /index\.jade$/
       }
     ]
@@ -60,12 +56,12 @@ module.exports =
     extensions:
       ['', '.coffee', '.js']
     alias:
-      app: path.resolve './src/app'
-      service: path.resolve './src/service'
+      app: path.resolve './client/app'
+      services: path.resolve './client/services'
   plugins: do ->
     plugins = [
       new HtmlWebpackPlugin {
-        template: 'html!jade-html!./src/index.jade'
+        template: 'html!jade-html!./client/index.jade'
         inject: 'head'
       }
       new ExtractTextPlugin if ENV == 'development' then '[name].css' else '[name].[hash].css',
