@@ -1,0 +1,38 @@
+md-sidenav(md-is-locked-open='true' flex="none" layout="column")
+  md-list
+    .header Application
+    md-divider
+    md-list-item(flex layout="column" layout-align="center start" ng-repeat='(app_name, app) in $ctrl.filters()')
+      .app-name
+        label
+          input(type='checkbox' ng-model='app.value' ui-indeterminate='app.is_indeterminate()' ng-change='app.update_value()')
+          span {{app_name}}
+        .session-name(ng-repeat='(session_name, session) in app.sessions')
+          label
+            input(type='checkbox' ng-model='session.value' ng-change='session.update_value()')
+            span {{session_name}}
+    md-divider
+    .header Log Levels
+    md-divider
+    .log-level-name(ng-repeat='level in $ctrl.logLevels()')
+      label
+        input(type='checkbox' ng-model='level.value' ng-change='level.update_value()')
+        span {{level.name}}
+    md-divider
+    .header Filter
+    md-divider
+    .regex-filter
+      span Regex:
+      input(ng-model='filter_text' ng-change='$ctrl.update_logs()')
+
+div(flex).log-viewer
+  .log(ng-repeat='log in $ctrl.logs()' ng-class="'level-' + log.message.level")
+    div
+      span.timestamp {{formatTime(log.message.timestampe)}}
+      span [
+      span.level
+      span ] 
+      span(ng-if='log.message.scope.length') [
+      span.scope {{formatScope(log.message.scope)}}
+      span(ng-if='log.message.scope.length') ]
+      span.message {{format(log)}}

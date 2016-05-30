@@ -2,10 +2,7 @@ doctype html
 html(ng-app='app', lang='en', strict-di)
   head
     meta(charset='UTF-8')
-    title XList
+    title XLCLogger
     base(href='/')
-  body
-    md-toolbar
-      .md-toolbar-tools
-        span XList
-    div(ui-view)
+    script(src='http://localhost:3000/socket.io/socket.io.js')
+  body(ui-view layout)

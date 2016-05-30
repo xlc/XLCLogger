@@ -58,6 +58,7 @@ module.exports =
     alias:
       app: path.resolve './client/app'
       services: path.resolve './client/services'
+      applog: path.resolve './client/log'
   plugins: do ->
     plugins = [
       new HtmlWebpackPlugin {
@@ -72,6 +73,7 @@ module.exports =
       }
       new webpack.ProvidePlugin {
         _: 'lodash'
+        app: 'app'
       }
     ]
     if ENV != 'development'
