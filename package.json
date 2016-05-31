@@ -5,7 +5,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rimraf build && webpack --bail --progress --profile",
-    "start": "webpack-dev-server --inline --colors --history-api-fallback"
+    "start": "webpack-dev-server --inline --colors --history-api-fallback",
+    "coffee": "coffee -c -o dist ./client/xlclogger.coffee"
   },
   "author": "",
   "license": "",
