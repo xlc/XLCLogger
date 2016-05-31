@@ -11,7 +11,7 @@ io.on 'connection', (socket) ->
 
   prop = {}
   socket.on 'register', (data) ->
-    console.log 'register', data.type, data.name, data.session
+    console.log 'register', data.type, data.name, data.session, typeof data.session
     return if prop.registered
     prop.registered = true
     _.assign prop, data
@@ -26,11 +26,11 @@ io.on 'connection', (socket) ->
           }
           
     socket.broadcast.emit 'register', data
-    _.set clients, "[#{prop.type}][#{prop.name}][#{prop.session}]", socket
+    _.set clients, "['#{prop.type}']['#{prop.name}']['#{prop.session}']", socket
 
   socket.on 'disconnect', ->
     console.log 'disconnect', prop.type, prop.name, prop.session
-    _.set clients, "[#{prop.type}][#{prop.name}][#{prop.session}]", null
+    _.set clients, "['#{prop.type}']['#{prop.name}']['#{prop.session}']", null
     socket.broadcast.emit 'unregister', _.pick prop, ['type', 'name', 'session']
 
   socket.on 'message', (message) ->
