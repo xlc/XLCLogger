@@ -1,4 +1,4 @@
-log = require 'applog'
+# log = require 'applog'
 moment = require 'moment'
 
 app.config (stateHelperProvider) ->
@@ -18,10 +18,10 @@ app.component 'appMain', {
 
     update_logs = ->
       _logs = _.filter _all_logs, (data) ->
-        _filters[data.from]?.sessions?[data.session]?.value &&
-          _.find _logLevels, {name: data.message.level}
-          ?.value &&
-          $scope.format(data).match new RegExp $scope.filter_text
+        return unless _filters[data.from]?.sessions?[data.session]?.value
+        return unless _.find(_logLevels, {name: data.message.level})?.value
+        return unless $scope.format(data).match new RegExp $scope.filter_text
+        return data.message.scope.join(':').match new RegExp $scope.scope_filter_text
 
     create_app = (data) ->
       return unless data.type == 'logger'
@@ -77,33 +77,31 @@ app.component 'appMain', {
       if _.get _filters, "[#{data.from}].sessions[#{data.session}].value"
         _logs.push data
 
-    $scope.$watch 'filter_text', update_logs
+    # log 1
+    # log 'str'
+    # log new Date
+    # log {a:1}
+    # log.debug 'debug'
+    # log.log 'log'
+    # log.info 'info'
+    # log.warn 'warn'
+    # log.error 'error'
 
-    log 1
-    log 'str'
-    log new Date
-    log {a:1}
-    log.debug 'debug'
-    log.log 'log'
-    log.info 'info'
-    log.warn 'warn'
-    log.error 'error'
+    # test_log = log.scope 'test'
+    # test_log 'test'
+    # test_log.debug 'debug'
+    # test_log.log 'log'
+    # test_log.info 'info'
+    # test_log.warn 'warn'
+    # test_log.error 'error'
 
-    test_log = log.scope 'test'
-    test_log 'test'
-    test_log.debug 'debug'
-    test_log.log 'log'
-    test_log.info 'info'
-    test_log.warn 'warn'
-    test_log.error 'error'
-
-    t2_log = test_log.scope 'nested'
-    t2_log 'nested'
-    t2_log.debug 'debug'
-    t2_log.log 'log'
-    t2_log.info 'info'
-    t2_log.warn 'warn'
-    t2_log.error 'error'
+    # t2_log = test_log.scope 'nested'
+    # t2_log 'nested'
+    # t2_log.debug 'debug'
+    # t2_log.log 'log'
+    # t2_log.info 'info'
+    # t2_log.warn 'warn'
+    # t2_log.error 'error'
 
     $scope.format = (msg) ->
       _.map msg.message.message, (m) ->
@@ -123,6 +121,7 @@ app.component 'appMain', {
       filters: -> _filters
       logs: -> _logs
       logLevels: -> _logLevels
+      update_logs
     }
 }
 

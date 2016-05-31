@@ -1,4 +1,4 @@
-shortid = require 'shortid'
+io = require 'socket.io-client'
 
 sequence = 0
 
@@ -27,7 +27,7 @@ create_logger = (socket, scope = []) ->
     warn: _log.bind null, 'warn'
     error: _log.bind null, 'error'
     scope: (innerScope) ->
-      innerScope ?= shortid.generate()
+      innerScope ?= Math.random().toString(36).substr(2, 5)
       create_logger socket, scope.concat innerScope
   }
 
@@ -37,7 +37,7 @@ module.exports = (server, name, session) ->
     socket.emit 'register', {
       type: 'logger'
       name: name
-      session: session ? shortid.generate()
+      session: session ? new Date().toISOString()
     }
 
   create_logger socket

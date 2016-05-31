@@ -27,6 +27,18 @@ app-main {
 
   .regex-filter {
     padding-left: 15px;
+    div {
+      margin-top: 5px;
+      span {
+        width: 80px;
+        display: inline-block;
+        text-align: right;
+        margin-right: 10px;
+      }
+      input {
+        width: calc(100% - 100px);
+      }
+    }
   }
 
   .log-viewer {

@@ -22,8 +22,12 @@ md-sidenav(md-is-locked-open='true' flex="none" layout="column")
     .header Filter
     md-divider
     .regex-filter
-      span Regex:
-      input(ng-model='filter_text' ng-change='$ctrl.update_logs()')
+      div
+        span Message:
+        input(ng-model='filter_text' ng-change='$ctrl.update_logs()')
+      div
+        span Scope:
+        input(ng-model='scope_filter_text' ng-change='$ctrl.update_logs()')
 
 div(flex).log-viewer
   .log(ng-repeat='log in $ctrl.logs()' ng-class="'level-' + log.message.level")
