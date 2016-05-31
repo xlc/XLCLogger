@@ -10,7 +10,7 @@ app.config (stateHelperProvider) ->
 
 app.component 'appMain', {
   templateUrl: require './app_main.jade'
-  controller: ($scope, Socket) ->
+  controller: ($scope, $timeout, Socket) ->
 
     _all_logs = []
     _logs = []
@@ -98,6 +98,12 @@ app.component 'appMain', {
       _all_logs.push data
       if include_data data
         _logs.push data
+      el = $ '.log-viewer > div'
+      top = el[0].scrollTop
+      height = el.height()
+      if el[0].scrollTop + height >= el[0].scrollHeight
+        $timeout ->
+          el.scrollTop(el[0].scrollHeight)
 
     log 1
     log 'str'
