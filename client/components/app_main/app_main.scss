@@ -42,6 +42,8 @@ app-main {
   }
 
   .log-viewer {
+    overflow: scroll;
+    
     .log {
       font-size: 0.6rem;
       .timestamp {

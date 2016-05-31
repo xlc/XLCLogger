@@ -29,14 +29,14 @@ md-sidenav(md-is-locked-open='true' flex="none" layout="column")
         span Scope:
         input(ng-model='scope_filter_text' ng-change='$ctrl.update_logs()')
 
-div(flex).log-viewer
-  .log(ng-repeat='log in $ctrl.logs()' ng-class="'level-' + log.message.level")
+md-virtual-repeat-container.log-viewer(flex)
+  .log(md-virtual-repeat='log in $ctrl.logs()' ng-class="'level-' + log.message.level")
     div
-      span.timestamp {{formatTime(log.message.timestampe)}}
+      span.timestamp {{log.timestampText}}
       span [
       span.level
       span ] 
       span(ng-if='log.message.scope.length') [
-      span.scope {{formatScope(log.message.scope)}}
+      span.scope {{log.scopeText}}
       span(ng-if='log.message.scope.length') ]
-      span.message {{format(log)}}
+      span.message {{log.text}}

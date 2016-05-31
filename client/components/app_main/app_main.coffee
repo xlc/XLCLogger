@@ -1,4 +1,4 @@
-# log = require 'applog'
+log = require 'applog'
 moment = require 'moment'
 
 app.config (stateHelperProvider) ->
@@ -16,12 +16,17 @@ app.component 'appMain', {
     _logs = []
     _filters = {}
 
+    include_data = (data) ->
+      return false unless _filters[data.from]?.sessions?[data.session]?.value
+      return false unless _.find(_logLevels, {name: data.message.level})?.value
+      if $scope.filter_text
+        return false unless data.text.match new RegExp $scope.filter_text
+      if $scope.scope_filter_text
+        return false unless data.scopeText.match new RegExp $scope.scope_filter_text
+      true
+
     update_logs = ->
-      _logs = _.filter _all_logs, (data) ->
-        return unless _filters[data.from]?.sessions?[data.session]?.value
-        return unless _.find(_logLevels, {name: data.message.level})?.value
-        return unless $scope.format(data).match new RegExp $scope.filter_text
-        return data.message.scope.join(':').match new RegExp $scope.scope_filter_text
+      _logs = _.filter _all_logs, include_data
 
     create_app = (data) ->
       return unless data.type == 'logger'
@@ -72,38 +77,7 @@ app.component 'appMain', {
       if _.keys(_filters[data.name]).length == 0
         delete _filters[data.name]
 
-    $scope.$on 'Socket:message', (evt, data) ->
-      _all_logs.push data
-      if _.get _filters, "[#{data.from}].sessions[#{data.session}].value"
-        _logs.push data
-
-    # log 1
-    # log 'str'
-    # log new Date
-    # log {a:1}
-    # log.debug 'debug'
-    # log.log 'log'
-    # log.info 'info'
-    # log.warn 'warn'
-    # log.error 'error'
-
-    # test_log = log.scope 'test'
-    # test_log 'test'
-    # test_log.debug 'debug'
-    # test_log.log 'log'
-    # test_log.info 'info'
-    # test_log.warn 'warn'
-    # test_log.error 'error'
-
-    # t2_log = test_log.scope 'nested'
-    # t2_log 'nested'
-    # t2_log.debug 'debug'
-    # t2_log.log 'log'
-    # t2_log.info 'info'
-    # t2_log.warn 'warn'
-    # t2_log.error 'error'
-
-    $scope.format = (msg) ->
+    format = (msg) ->
       _.map msg.message.message, (m) ->
         if _.isString m
           m
@@ -111,11 +85,49 @@ app.component 'appMain', {
           JSON.stringify m
       .join ' '
 
-    $scope.formatTime = (time) ->
+    formatTime = (time) ->
       moment(time).format 'MM-DD HH:mm:ss.SSS'
 
-    $scope.formatScope = (scope) ->
+    formatScope = (scope) ->
       scope.join ':'
+
+    $scope.$on 'Socket:message', (evt, data) ->
+      data.text = format data
+      data.timestampText = formatTime data.message.timestamp
+      data.scopeText = formatScope data.message.scope
+      _all_logs.push data
+      if include_data data
+        _logs.push data
+
+    log 1
+    log 'str'
+    log new Date
+    log {a:1}
+    log.debug 'debug'
+    log.log 'log'
+    log.info 'info'
+    log.warn 'warn'
+    log.error 'error'
+
+    test_log = log.scope 'test'
+    test_log 'test'
+    test_log.debug 'debug'
+    test_log.log 'log'
+    test_log.info 'info'
+    test_log.warn 'warn'
+    test_log.error 'error'
+
+    t2_log = test_log.scope 'nested'
+    t2_log 'nested'
+    t2_log.debug 'debug'
+    t2_log.log 'log'
+    t2_log.info 'info'
+    t2_log.warn 'warn'
+    t2_log.error 'error'
+
+    # setInterval ->
+    #   log new Date
+    # , 10
 
     {
       filters: -> _filters
