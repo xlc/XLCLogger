@@ -34,7 +34,7 @@ io.on 'connection', (socket) ->
     socket.broadcast.emit 'unregister', _.pick prop, ['type', 'name', 'session']
 
   socket.on 'message', (message) ->
-    console.log 'message', prop.type, prop.name, prop.session, message
+    # console.log 'message', prop.type, prop.name, prop.session, message
     socket.broadcast.emit 'message', {
       from: prop.name
       session: prop.session
