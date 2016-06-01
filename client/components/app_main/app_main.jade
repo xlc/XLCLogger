@@ -28,6 +28,15 @@ md-sidenav(md-is-locked-open='true' flex="none" layout="column")
       div
         span Scope:
         input(ng-model='scope_filter_text' ng-change='$ctrl.update_logs()')
+      .exclude_filters Excludes
+        div
+          input(ng-model='exclude_filter_text')
+          button(ng-click='$ctrl.add_exclude_filter(exclude_filter_text)') Add
+        div(ng-repeat='(i, filter) in $ctrl.exclude_filters()')
+          input(type='checkbox' ng-model='filter.enabled' ng-change='$ctrl.save(); $ctrl.update_logs()')
+          input(ng-model='filter.text')
+          button(ng-click='$ctrl.update_exclude_filter(filter, i)') Update
+
     md-divider
       md-button.md-raised(ng-click='$ctrl.clear_all()') Clear All
 

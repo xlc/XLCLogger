@@ -1,5 +1,4 @@
 # log = require 'applog'
-moment = require 'moment'
 
 app.config (stateHelperProvider) ->
   stateHelperProvider
@@ -10,15 +9,28 @@ app.config (stateHelperProvider) ->
 
 app.component 'appMain', {
   templateUrl: require './app_main.jade'
-  controller: ($scope, $timeout, Socket) ->
+  controller: ($scope, $timeout, Socket, LogStore, $localStorage) ->
 
-    _all_logs = []
     _logs = []
     _filters = {}
+    _exlcude_filters = []
+
+    save = ->
+      $localStorage.exclude_filters = _.map _exlcude_filters, (f) -> _.pick f, ['text', 'enabled']
+
+    load = ->
+      _exlcude_filters = _.map $localStorage.exclude_filters, ({text, enabled}) ->
+        {
+          text
+          enabled
+          regex: new RegExp text
+        }
+
+    load()
 
     clear_all = ->
-      _all_logs = []
       _logs = []
+      LogStore.clear()
 
     include_data = (data) ->
       return false unless _filters[data.from]?.sessions?[data.session]?.value
@@ -27,10 +39,12 @@ app.component 'appMain', {
         return false unless data.text.match new RegExp $scope.filter_text
       if $scope.scope_filter_text
         return false unless data.scopeText.match new RegExp $scope.scope_filter_text
+      return false if _.some _exlcude_filters, (filter) ->
+        filter.enabled && data.text.match filter.regex
       true
 
     update_logs = ->
-      _logs = _.filter _all_logs, include_data
+      _logs = _.filter LogStore.get_all(), include_data
 
     create_app = (data) ->
       return unless data.type == 'logger'
@@ -57,6 +71,23 @@ app.component 'appMain', {
           update_logs()
       }
 
+    add_exclude_filter = (text) ->
+      _exlcude_filters.push {
+        text
+        regex: new RegExp text
+        enabled: true
+      }
+      save()
+      update_logs()
+
+    update_exclude_filter = (filter, idx) ->
+      if filter.text.length == 0
+        _exlcude_filters.splice idx, 1
+      else
+        filter.regex = new RegExp filter.text
+      save()
+      update_logs()
+
     _.each Socket.clients.logger, (app, name) ->
       _.each app, (session, name) ->
         create_app {
@@ -81,25 +112,8 @@ app.component 'appMain', {
       if _.keys(_filters[data.name]).length == 0
         delete _filters[data.name]
 
-    format = (msg) ->
-      _.map msg.message.message, (m) ->
-        if _.isString m
-          m
-        else
-          JSON.stringify m
-      .join ' '
-
-    formatTime = (time) ->
-      moment(time).format 'MM-DD HH:mm:ss.SSS'
-
-    formatScope = (scope) ->
-      scope.join ':'
-
     $scope.$on 'Socket:message', (evt, data) ->
-      data.text = format data
-      data.timestampText = formatTime data.message.timestamp
-      data.scopeText = formatScope data.message.scope
-      _all_logs.push data
+      data = LogStore.add_log data
       if include_data data
         _logs.push data
       el = $ '.log-viewer > div'
@@ -143,8 +157,12 @@ app.component 'appMain', {
       filters: -> _filters
       logs: -> _logs
       logLevels: -> _logLevels
+      exclude_filters: -> _exlcude_filters
       update_logs
       clear_all
+      add_exclude_filter
+      update_exclude_filter
+      save
     }
 }
 

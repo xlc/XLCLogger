@@ -39,6 +39,22 @@ app-main {
         width: calc(100% - 100px);
       }
     }
+
+    .exclude_filters {
+      margin-bottom: 10px;
+      > div {
+        display: flex;
+        height: 20px;
+        input {
+          flex-grow: 1;
+          margin-right: 10px;
+
+          &[type='checkbox'] {
+            width: 15px;
+          }
+        }
+      }
+    }
   }
 
   .log-viewer {
