@@ -1,4 +1,4 @@
-log = require 'applog'
+# log = require 'applog'
 moment = require 'moment'
 
 app.config (stateHelperProvider) ->
@@ -15,6 +15,10 @@ app.component 'appMain', {
     _all_logs = []
     _logs = []
     _filters = {}
+
+    clear_all = ->
+      _all_logs = []
+      _logs = []
 
     include_data = (data) ->
       return false unless _filters[data.from]?.sessions?[data.session]?.value
@@ -105,31 +109,31 @@ app.component 'appMain', {
         $timeout ->
           el.scrollTop(el[0].scrollHeight)
 
-    log 1
-    log 'str'
-    log new Date
-    log {a:1}
-    log.debug 'debug'
-    log.log 'log'
-    log.info 'info'
-    log.warn 'warn'
-    log.error 'error'
+    # log 1
+    # log 'str'
+    # log new Date
+    # log {a:1}
+    # log.debug 'debug'
+    # log.log 'log'
+    # log.info 'info'
+    # log.warn 'warn'
+    # log.error 'error'
 
-    test_log = log.scope 'test'
-    test_log 'test'
-    test_log.debug 'debug'
-    test_log.log 'log'
-    test_log.info 'info'
-    test_log.warn 'warn'
-    test_log.error 'error'
+    # test_log = log.scope 'test'
+    # test_log 'test'
+    # test_log.debug 'debug'
+    # test_log.log 'log'
+    # test_log.info 'info'
+    # test_log.warn 'warn'
+    # test_log.error 'error'
 
-    t2_log = test_log.scope 'nested'
-    t2_log 'nested'
-    t2_log.debug 'debug'
-    t2_log.log 'log'
-    t2_log.info 'info'
-    t2_log.warn 'warn'
-    t2_log.error 'error'
+    # t2_log = test_log.scope 'nested'
+    # t2_log 'nested'
+    # t2_log.debug 'debug'
+    # t2_log.log 'log'
+    # t2_log.info 'info'
+    # t2_log.warn 'warn'
+    # t2_log.error 'error'
 
     # setInterval ->
     #   log new Date
@@ -140,6 +144,7 @@ app.component 'appMain', {
       logs: -> _logs
       logLevels: -> _logLevels
       update_logs
+      clear_all
     }
 }
 

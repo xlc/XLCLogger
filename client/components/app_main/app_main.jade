@@ -28,6 +28,8 @@ md-sidenav(md-is-locked-open='true' flex="none" layout="column")
       div
         span Scope:
         input(ng-model='scope_filter_text' ng-change='$ctrl.update_logs()')
+    md-divider
+      md-button.md-raised(ng-click='$ctrl.clear_all()') Clear All
 
 md-virtual-repeat-container.log-viewer(flex)
   .log(md-virtual-repeat='log in $ctrl.logs()' ng-class="'level-' + log.message.level")
