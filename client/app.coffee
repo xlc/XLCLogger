@@ -3,6 +3,7 @@ window.$ = window.jQuery
 angular = require 'angular'
 
 require 'mdi/scss/materialdesignicons.scss'
+require 'roboto-fontface'
 
 require 'angular-material/angular-material.scss'
 
