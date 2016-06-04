@@ -44,7 +44,7 @@ app-main {
       margin-bottom: 10px;
       > div {
         display: flex;
-        height: 20px;
+        height: 25px;
         input {
           flex-grow: 1;
           margin-right: 10px;
@@ -61,46 +61,52 @@ app-main {
     overflow: scroll;
     
     .log {
-      font-size: 0.6rem;
+      font-size: 0.7rem;
+      display: flex;
+      border-bottom: 1px rgba(0, 0, 0, 0.1) solid;
+      padding: 2px 0px 2px 5px;
+
+      > span {
+        line-height: 2;
+      }
+
+      &:hover {
+        box-shadow: inset 0px 0px 3px 1px rgba(0,0,0,0.2);
+      }
+
       .timestamp {
         color: #777;
-        margin-right: 5px;
       }
       .message {
         font-size: 1rem;
       }
       .level {
         display: inline-block;
-        width: 35px;
+        width: 42px;
         text-align: center;
+        text-transform: uppercase;
+      }
+      .scope {
+        text-align: right;
       }
       .scope, .timestamp, .message {
-        margin-left: 5px;
-        margin-right: 5px;
+        margin: 0 5px;
       }
     }
   }
 }
 
 .level-debug {
-  .level:after {
-    content: 'DEBUG';
-  }
   .level, .message {
     color: #777;
   }
 }
 
 .level-log {
-  .level:after {
-    content: 'LOG'
-  }
+
 }
 
 .level-info {
-  .level:after {
-    content: 'INFO'
-  }
   .level {
     color: #0000FF;
   }
@@ -108,16 +114,10 @@ app-main {
 
 .level-warn {
   background: #FFFBE6;
-  .level:after {
-    content: 'WARN'
-  }
 }
 
 .level-error {
   background: #FFF0F0;
-  .level:after {
-    content: 'ERROR'
-  }
   .level, .message {
     color: #FF0000;
   }

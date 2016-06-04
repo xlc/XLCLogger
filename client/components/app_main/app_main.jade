@@ -42,12 +42,10 @@ md-sidenav(md-is-locked-open='true' flex="none" layout="column")
 
 md-virtual-repeat-container.log-viewer(flex)
   .log(md-virtual-repeat='log in $ctrl.logs()' ng-class="'level-' + log.message.level")
+    span [
+    span.level {{log.message.level}}
+    span ]
     div
-      span.timestamp {{log.timestampText}}
-      span [
-      span.level
-      span ] 
-      span(ng-if='log.message.scope.length') [
-      span.scope {{log.scopeText}}
-      span(ng-if='log.message.scope.length') ]
-      span.message {{log.text}}
+      .timestamp {{log.timestampText}}
+      .scope [ {{log.scopeText}} ]
+    .message {{log.text}}

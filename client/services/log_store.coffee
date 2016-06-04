@@ -11,8 +11,8 @@ app.service 'LogStore', () ->
       else
         JSON.stringify m
     .join ' '
-    data.timestampText = moment(data.message.timestamp).format 'MM-DD HH:mm:ss.SSS'
-    data.scopeText = data.message.scope.join ':'
+    data.timestampText = moment(data.message.timestamp).format 'YYYY-MM-DD HH:mm:ss.SSS'
+    data.scopeText = [data.from].concat(data.message.scope).join ':'
     _all_logs.push data
     data
 

@@ -77,6 +77,7 @@ app.component 'appMain', {
         regex: new RegExp text
         enabled: true
       }
+      $scope.exclude_filter_text = ''
       save()
       update_logs()
 
