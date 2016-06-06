@@ -1,0 +1,9 @@
+md-virtual-repeat-container
+  .log(md-virtual-repeat='log in $ctrl.logs' ng-class="'level-' + log.message.level")
+    span [
+    span.level {{log.message.level}}
+    span ]
+    div
+      .timestamp {{log.timestampText}}
+      .scope [ {{log.scopeText}} ]
+    .message {{log.text}}

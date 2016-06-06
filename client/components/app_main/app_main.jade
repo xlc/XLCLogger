@@ -40,12 +40,4 @@ md-sidenav(md-is-locked-open='true' flex="none" layout="column")
     md-divider
       md-button.md-raised(ng-click='$ctrl.clear_all()') Clear All
 
-md-virtual-repeat-container.log-viewer(flex)
-  .log(md-virtual-repeat='log in $ctrl.logs()' ng-class="'level-' + log.message.level")
-    span [
-    span.level {{log.message.level}}
-    span ]
-    div
-      .timestamp {{log.timestampText}}
-      .scope [ {{log.scopeText}} ]
-    .message {{log.text}}
+log-viewer(flex logs='$ctrl.logs()')
