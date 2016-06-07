@@ -22,6 +22,7 @@ log-viewer {
 
     .timestamp {
       color: #777;
+      width: 125px;
     }
     .message {
       font-size: 1rem;
@@ -34,36 +35,37 @@ log-viewer {
     }
     .scope {
       text-align: right;
+      white-space: nowrap;
     }
     .scope, .timestamp, .message {
       margin: 0 5px;
     }
-  }
 
-  .level-debug {
-    .level, .message {
-      color: #777;
+    &.debug {
+      .level, .message {
+        color: #777;
+      }
     }
-  }
 
-  .level-log {
+    &.log {
 
-  }
-
-  .level-info {
-    .level {
-      color: #0000FF;
     }
-  }
 
-  .level-warn {
-    background: #FFFBE6;
-  }
+    &.info {
+      .level {
+        color: #0000FF;
+      }
+    }
 
-  .level-error {
-    background: #FFF0F0;
-    .level, .message {
-      color: #FF0000;
+    &.warn {
+      background: #FFFBE6;
+    }
+
+    &.error {
+      background: #FFF0F0;
+      .level, .message {
+        color: #FF0000;
+      }
     }
   }
 }

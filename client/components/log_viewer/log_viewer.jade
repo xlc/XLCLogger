@@ -1,5 +1,5 @@
 md-virtual-repeat-container
-  .log(md-virtual-repeat='log in $ctrl.logs' ng-class="'level-' + log.message.level")
+  div(md-virtual-repeat='log in $ctrl.logs' ng-class='[log.message.level, "log"]' md-item-size='31')
     span [
     span.level {{log.message.level}}
     span ]
