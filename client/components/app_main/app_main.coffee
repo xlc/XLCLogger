@@ -115,12 +115,6 @@ app.component 'appMain', {
       data = LogStore.add_log data
       if include_data data
         _logs.push data
-      el = $ 'log-viewer .md-virtual-repeat-scroller'
-      top = el[0].scrollTop
-      height = el.height()
-      if el[0].scrollTop + height >= el[0].scrollHeight
-        $timeout ->
-          el.scrollTop(el[0].scrollHeight)
 
     {
       filters: -> _filters
