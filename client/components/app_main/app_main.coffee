@@ -1,5 +1,3 @@
-# log = require 'applog'
-
 app.config (stateHelperProvider) ->
   stateHelperProvider
     .state
@@ -123,36 +121,6 @@ app.component 'appMain', {
       if el[0].scrollTop + height >= el[0].scrollHeight
         $timeout ->
           el.scrollTop(el[0].scrollHeight)
-
-    # log 1
-    # log 'str'
-    # log new Date
-    # log {a:1}
-    # log.debug 'debug'
-    # log.log 'log'
-    # log.info 'info'
-    # log.warn 'warn'
-    # log.error 'error'
-
-    # test_log = log.scope 'test'
-    # test_log 'test'
-    # test_log.debug 'debug'
-    # test_log.log 'log'
-    # test_log.info 'info'
-    # test_log.warn 'warn'
-    # test_log.error 'error'
-
-    # t2_log = test_log.scope 'nested'
-    # t2_log 'nested'
-    # t2_log.debug 'debug'
-    # t2_log.log 'log'
-    # t2_log.info 'info'
-    # t2_log.warn 'warn'
-    # t2_log.error 'error'
-
-    # setInterval ->
-    #   log new Date
-    # , 10
 
     {
       filters: -> _filters
